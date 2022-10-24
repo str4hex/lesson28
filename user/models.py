@@ -10,6 +10,13 @@ class Location(models.Model):
     lat = models.CharField(max_length=255)
     lng = models.CharField(max_length=255)
 
+    class Meta:
+        verbose_name = 'Локация'
+        verbose_name_plural = 'Локации'
+
+    def __str__(self):
+        return self.name
+
 
 class User(models.Model):
     id = models.AutoField(primary_key=True)
@@ -21,7 +28,11 @@ class User(models.Model):
     age = models.IntegerField()
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
 
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
-
+    def __str__(self):
+        return self.first_name + " " +  self.last_name
 
 # Create your models here.

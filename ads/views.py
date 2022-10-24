@@ -1,6 +1,7 @@
 import json
 
 from django.core.paginator import Paginator
+from django.db.models import Avg, Count
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -16,6 +17,7 @@ class AdsViewList(ListView):
 
     def get(self, request, *args, **keargs):
         super().get(request, *args, **keargs)
+        ad_qs = Ad.objects.annotate(obj_name=Count('name'))
         ad = self.object_list.order_by('-price')
         response = []
         paginator = Paginator(self.object_list, MAX_PAGE)
@@ -34,7 +36,9 @@ class AdsViewList(ListView):
 
         return JsonResponse({"items": response,
                              "total": ad.count(),
-                             "num_pages": paginator.num_pages})
+                             "num_pages": paginator.num_pages,
+                             "avg": ad_qs.aggregate(Avg('Id'))
+                             })
 
 
 class AdsDetailView(DetailView):

@@ -12,3 +12,10 @@ class Ad(models.Model):
     is_published = models.BooleanField(default=False)
     image = models.ImageField(upload_to='images', blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name = 'Объявление'
+        verbose_name_plural = 'Объявления'
+
+    def __str__(self):
+        return self.name
