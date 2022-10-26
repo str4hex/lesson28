@@ -16,18 +16,25 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+
 from ads import urls as adurls
+from ads.views import AdsViewSet
 from category import urls as caturls
 from lesson28 import settings
 from user import urls as userurls
 
 
+router = routers.SimpleRouter()
+router.register('ad', AdsViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('ad/', include(adurls)),
     path('cat/', include(caturls)),
     path('user/', include(userurls)),
 
 
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+urlpatterns += router.urls
