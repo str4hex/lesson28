@@ -5,7 +5,7 @@ from user.models import User, Location
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = '__all__'
+        fields = ['id', 'name', 'lat', 'lng']
 
 
 class UserSerializer(serializers.ModelSerializer):

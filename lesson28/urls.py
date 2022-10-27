@@ -23,10 +23,11 @@ from ads.views import AdsViewSet
 from category import urls as caturls
 from lesson28 import settings
 from user import urls as userurls
-
+from user.views import LocationViewList
 
 router = routers.SimpleRouter()
 router.register('ad', AdsViewSet)
+router.register('location', LocationViewList)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
