@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from django.db import models
@@ -17,14 +18,9 @@ class Location(models.Model):
         return self.name
 
 
-class User(models.Model):
-    id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    username = models.CharField(max_length=255)
-    password = models.CharField(max_length=255)
-    role = models.CharField(max_length=255)
-    age = models.IntegerField()
+class User(AbstractUser):
+    role = models.CharField(max_length=255, default="user")
+    age = models.IntegerField(null=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -32,6 +28,4 @@ class User(models.Model):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return self.first_name + " " +  self.last_name
-
-# Create your models here.
+        return self.username

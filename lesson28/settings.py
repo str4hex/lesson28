@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=^#s+7uq(ohqa2p7hx=68i!ggyq2j4xh-!629!7f@c(ywy#uc7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'ads',
     'category',
     'user',
@@ -137,7 +138,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MAX_PAGE = 10
 
+AUTH_USER_MODEL = 'user.User'
+
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
 }
