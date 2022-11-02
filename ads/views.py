@@ -1,13 +1,14 @@
-from rest_framework.viewsets import ModelViewSet
-from ads.models import Ad, Category
-from ads.serializer import AdsSerializer
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
+from ads.models import Ad, Category, Selection
+from ads.permissions import IsOwnerSelectionStuff, IsOwnerAdStuff
+from ads.serializer import AdsSerializer, SelectionCreateSerializer, SelectionListSerializer, SelectionDetailSerializer, \
+    AdsCreateSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
-class AdsViewSet(ModelViewSet):
+class AdApiView(ListAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdsSerializer
-    permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
         print(request.GET.get('text', None))
@@ -47,3 +48,54 @@ class AdsViewSet(ModelViewSet):
             return super().list(request, *args, **kwargs)
         else:
             return super().list(request, *args, **kwargs)
+
+
+class AdViewDetail(RetrieveAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdsSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class AdViewCreate(CreateAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdsCreateSerializer
+
+
+class AdUpdateApiView(UpdateAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdsSerializer
+    permission_classes = [IsOwnerAdStuff]
+
+
+class AdDestroyApiView(DestroyAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdsSerializer
+    permission_classes = [IsOwnerAdStuff]
+
+
+class SelectionCreateApiView(CreateAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = SelectionCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class SelectionListApiView(ListAPIView):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionListSerializer
+
+
+class SelectionDetailApiView(RetrieveAPIView):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionDetailSerializer
+
+
+class SelectionUpdateApiView(UpdateAPIView):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionCreateSerializer
+    permission_classes = [IsAuthenticated, IsOwnerSelectionStuff]
+
+
+class SelectionDeleteApiView(DestroyAPIView):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionCreateSerializer
+    permission_classes = [IsAuthenticated]

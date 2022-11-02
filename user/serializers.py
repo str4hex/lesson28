@@ -5,11 +5,11 @@ from user.models import User, Location
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ['id', 'name', 'lat', 'lng']
+        fields = ['name']
 
 
 class UserSerializer(serializers.ModelSerializer):
-    location = LocationSerializer()
+    location = serializers.SlugRelatedField(slug_field='name', read_only=True)
 
     class Meta:
         model = User

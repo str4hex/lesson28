@@ -19,10 +19,19 @@ class Location(models.Model):
 
 
 class User(AbstractUser):
-    role = models.CharField(max_length=255, default="user")
-    age = models.IntegerField(null=True)
-    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+    MEMBER = 'member'
+    ADMIN = 'admin'
+    MODERATOR = 'moderator'
+    STATUS = [
+        (MEMBER, 'Пользователь'),
+        (ADMIN, 'Администратор'),
+        (MODERATOR, 'Модератор')
+    ]
 
+    role = models.CharField(choices=STATUS, max_length=9)
+    age = models.IntegerField(null=True)
+    # location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+    location = models.ManyToManyField(Location)
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
