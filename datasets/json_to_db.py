@@ -34,6 +34,7 @@ with open('user.json', 'r', encoding='utf-8') as file_json:
                     password=load[load_db]['password'],
                     role=load[load_db]['role'],
                     age=load[load_db]['age'],
+                    email=load[load_db]['email']
                     # location_id=load[load_db]['location_id'],
                     )
         user.save()

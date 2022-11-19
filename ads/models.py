@@ -14,7 +14,7 @@ def name_length_validators(value):
 
 # Create your models here.
 class Ad(models.Model):
-    Id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, null=False, validators=[name_length_validators])
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     price = models.PositiveIntegerField(validators=[MinValueValidator(0)])

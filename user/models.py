@@ -11,11 +11,6 @@ def age_validators(value):
         raise ValidationError("Регистрация возможно если вы старше 9 лет.")
 
 
-def email_validators(value):
-    if re.search('@rambler.ru', value):
-        raise ValidationError(f"Регистрация в зоне rambler запрещена")
-
-
 class Location(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
@@ -45,7 +40,7 @@ class User(AbstractUser):
     # location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
     location = models.ManyToManyField(Location)
     birth_date = models.DateField(validators=[age_validators], null=True)
-    email = models.EmailField(unique=True, validators=[email_validators])
+    email = models.EmailField()
 
     class Meta:
         verbose_name = 'Пользователь'

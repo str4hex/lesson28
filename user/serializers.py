@@ -1,5 +1,20 @@
+import re
+
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from rest_framework.validators import UniqueValidator
+
 from user.models import User, Location
+
+
+class EmailValidators:
+
+    def __init__(self, email):
+        self.email = email
+
+    def __call__(self, value):
+        if re.search('@rambler.ru', value):
+            raise ValidationError(f"Регистрация в зоне rambler запрещена")
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -18,11 +33,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserCreateSerializer(serializers.ModelSerializer):
     location = LocationSerializer
+    email = serializers.EmailField(
+        validators=[EmailValidators([]), UniqueValidator(queryset=User.objects.all(), lookup='contains')])
 
     class Meta:
         model = User
-        fields = ['username', 'password']
-
+        fields = ['username', 'password', 'email']
 
     def create(self, validated_data):
         user = User.objects.create(**validated_data)
@@ -31,4 +47,3 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
-
